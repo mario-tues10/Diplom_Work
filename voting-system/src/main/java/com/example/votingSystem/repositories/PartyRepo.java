@@ -9,6 +9,4 @@ import java.util.Optional;
 @Repository
 public interface PartyRepo extends JpaRepository<Party, Long> {
 
-    Optional<Party> findByName(String name);
-
 }

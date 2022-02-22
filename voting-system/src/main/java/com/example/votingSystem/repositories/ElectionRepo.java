@@ -10,6 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ElectionRepo extends JpaRepository<Election, Long> {
 
-    Optional<Election> fundByName(String name);
 
 }
