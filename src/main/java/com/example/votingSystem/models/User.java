@@ -3,7 +3,7 @@ package com.example.votingSystem.models;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,7 +24,7 @@ public class User {
     private String PIN;
 
     @Column(name = "birthDate", nullable = false)
-    private Timestamp birth;
+    private LocalDate birth;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(

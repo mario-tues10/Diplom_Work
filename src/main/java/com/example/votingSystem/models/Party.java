@@ -25,7 +25,7 @@ public class Party {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "election_id", insertable = false, updatable = false)
+    @JoinColumn(name = "election_id", updatable = false)
     private Election currElection;
 
     @OneToMany(mappedBy = "currParty")

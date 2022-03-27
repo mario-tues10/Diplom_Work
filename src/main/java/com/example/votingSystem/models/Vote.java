@@ -21,7 +21,7 @@ public class Vote {
     private String hashed_PIN;
 
     @ManyToOne
-    @JoinColumn(name = "party_id", insertable = false, updatable = false)
+    @JoinColumn(name = "party_id", updatable = false)
     private Party votedParty;
 
     @Override

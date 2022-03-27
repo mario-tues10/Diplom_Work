@@ -6,14 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Home Page</title>
-    <!--<style>
+    <style>
         body{
-            background-image: url("src/main/resources/static/images/background_image.jpg");
+            background-image: url("../images/background_image.jpg");
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: cover;
+            background-position: center;
         }
-    </style> -->
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,7 +25,7 @@
             </button>
         </a>
     </div>
-    <form th:action="@{/register}" method="post" style="margin-right: 10px">
+    <form th:action="@{/register}" method="get" style="margin-right: 10px">
         <button class="btn btn-outline-success" type="submit">Register</button>
     </form>
     <form th:action="@{/register}" method="post">
@@ -34,8 +35,7 @@
 <br/>
 <br/>
 <div class="container text-center" style="color: white">
-    <h1>Welcome to Election System</h1>
-    <h3><a th:href="@{/elections}">Go Voting</a></h3>
+    <h1>Go and register if you want to vote!</h1>
 </div>
 </body>
 </html>

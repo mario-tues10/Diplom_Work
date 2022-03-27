@@ -22,7 +22,7 @@ public class Candidate {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "party_id", insertable = false, updatable = false)
+    @JoinColumn(name = "party_id", updatable = false)
     private Party currParty;
 
     @Override

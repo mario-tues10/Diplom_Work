@@ -42,7 +42,9 @@ public class ElectionService {
         return now.isBefore(curr.getEnd()) && now.isAfter(curr.getBeginning());
     }
 
-
+    public Election getById(Long id){
+        return electionRepo.getById(id);
+    }
 
 
 }
