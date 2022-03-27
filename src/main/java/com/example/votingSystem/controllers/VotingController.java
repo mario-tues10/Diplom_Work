@@ -3,11 +3,13 @@ package com.example.votingSystem.controllers;
 import com.example.votingSystem.models.Election;
 import com.example.votingSystem.models.Party;
 import com.example.votingSystem.models.User;
+import com.example.votingSystem.models.UserPrincipal;
 import com.example.votingSystem.models.Vote;
 import com.example.votingSystem.services.ElectionService;
 import com.example.votingSystem.services.PartyService;
 import com.example.votingSystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,8 +50,7 @@ public class VotingController {
         partyService.createParty("BSP", 1L);
         partyService.createParty("DSP", 1L);
         partyService.createParty("ATAKA", 1L);
-        userService.createUser("0348186680");
-        user = userService.getUser("0348186680");
+
 
     }
 
@@ -68,12 +69,13 @@ public class VotingController {
     }
 
     @PostMapping("/performVote/{partyId}")
-    public String voteProcess(@PathVariable Long partyId, Model model){
+    public String voteProcess(@PathVariable Long partyId, Model model, @AuthenticationPrincipal UserPrincipal userPrincipal){
         Party party = partyService.getParty(partyId);
-        if(userService.isUserVotedForElection(user, party.getCurrElection())){
+        User curr = userService.getUser(userPrincipal.getUsername());
+        if(userService.isUserVotedForElection(curr, party.getCurrElection())){
             return "redirect:/alreadyVoted";
         }
-        Vote vote = electionService.vote(user, party);
+        Vote vote = electionService.vote(curr, party);
         return null;
     }
 

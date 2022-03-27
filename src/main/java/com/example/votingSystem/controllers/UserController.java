@@ -42,7 +42,7 @@ public class UserController {
             return "redirect:/underAge";
         }
         userService.createUser(curr.getPIN());
-        return "redirect:/elections";
+        return "redirect:/login";
 
     }
 
