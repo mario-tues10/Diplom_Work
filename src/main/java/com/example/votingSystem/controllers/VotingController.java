@@ -8,6 +8,7 @@ import com.example.votingSystem.models.Vote;
 import com.example.votingSystem.services.ElectionService;
 import com.example.votingSystem.services.PartyService;
 import com.example.votingSystem.services.UserService;
+import java.lang.ProcessBuilder.Redirect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -76,7 +77,8 @@ public class VotingController {
             return "redirect:/alreadyVoted";
         }
         Vote vote = electionService.vote(curr, party);
-        return null;
+        model.addAttribute("voteId", vote.getId());
+        return "redirect:/assignedVote";
     }
 
     @GetMapping("/checkVote")
