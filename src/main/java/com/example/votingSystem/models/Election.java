@@ -34,7 +34,7 @@ public class Election {
     @ToString.Exclude
     Set<Party> parties = new HashSet<>();
 
-    @ManyToMany(mappedBy = "votedUsers", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "elections", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @ToString.Exclude
     Set<User> electionUsers = new HashSet<>();
 

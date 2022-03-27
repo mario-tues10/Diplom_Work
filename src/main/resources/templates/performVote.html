@@ -46,8 +46,9 @@
             <td th:text= "${party.name}">
             </td>
             <td>
-                <form th:action="@{/performVote}" method="post" th:object="${user}">
-
+                <form th:action="@{'/performVote/' + ${party.id}}" method="post" th:object="${user}">
+                    <input type="submit" name="vote-submit" id="vote-submit"
+                           class="form-control btn btn-primary" value="Vote" />
                 </form>
             </td>
         </tr>

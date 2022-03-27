@@ -1,19 +1,31 @@
 package com.example.votingSystem.services;
 
 import com.example.votingSystem.models.Election;
+import com.example.votingSystem.models.Party;
+import com.example.votingSystem.models.User;
+import com.example.votingSystem.models.Vote;
 import com.example.votingSystem.repositories.ElectionRepository;
+import com.example.votingSystem.repositories.VoteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class ElectionService {
 
-    @Autowired
-    ElectionRepository electionRepo;
+    private final ElectionRepository electionRepo;
+
+    private final UserService userService;
+
+    private final VoteRepository voteRepository;
+
+    private final BCryptPasswordEncoder encoder;
 
     @Transactional
     public void createElection( String name, LocalDateTime begin, LocalDateTime end){
@@ -26,7 +38,6 @@ public class ElectionService {
 
     public List<Election> currElections() {
 
-        LocalDateTime now = LocalDateTime.now();
         List<Election> available = new ArrayList<>();
         for(Election curr : electionRepo.findAll()){
             if(isItAvailable(curr)){
@@ -46,5 +57,23 @@ public class ElectionService {
         return electionRepo.getById(id);
     }
 
+    @Transactional
+    public Vote vote(User user, Party party){
+        saveElectionToUser(user, party);
+        return createVote(party, user.getPIN());
+    }
+
+    private void saveElectionToUser(User user, Party party){
+        Election election = party.getCurrElection();
+        user.getElections().add(election);
+        userService.saveUser(user);
+    }
+
+    private Vote createVote(Party party, String pin){
+        Vote curr = new Vote();
+        curr.setVotedParty(party);
+        curr.setHashed_PIN(encoder.encode(pin));
+        return voteRepository.save(curr);
+    }
 
 }

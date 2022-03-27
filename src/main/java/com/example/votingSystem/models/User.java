@@ -32,7 +32,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "election_id"))
     @ToString.Exclude
-    Set<Election> votedUsers = new HashSet<>();
+    Set<Election> elections = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

@@ -1,21 +1,22 @@
 package com.example.votingSystem.services;
 
 
+import com.example.votingSystem.models.Election;
 import com.example.votingSystem.models.User;
 import com.example.votingSystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.regex.Pattern;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Transactional
     public void createUser(String pin){
@@ -66,5 +67,18 @@ public class UserService {
             return "20";
         }
         return "wrong";
+    }
+
+    public User getUser(String pin){
+        return userRepository.findByPIN(pin);
+    }
+
+    public boolean isUserVotedForElection(User user, Election election){
+        return user.getElections().contains(election);
+    }
+
+    @Transactional
+    public void saveUser(User user){
+        userRepository.save(user);
     }
 }

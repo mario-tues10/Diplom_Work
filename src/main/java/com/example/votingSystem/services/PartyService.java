@@ -5,17 +5,17 @@ import com.example.votingSystem.models.Party;
 import com.example.votingSystem.repositories.PartyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 public class PartyService {
 
     @Autowired
-    PartyRepository partyRepo;
+    private PartyRepository partyRepo;
 
     @Autowired
-    ElectionService electionService;
+    private ElectionService electionService;
 
     @Transactional
     public void createParty(String name, Long electionID){
@@ -25,6 +25,10 @@ public class PartyService {
         currParty.setCurrElection(currElection);
         currElection.getParties().add(currParty);
         partyRepo.save(currParty);
+    }
+
+    public Party getParty(Long id){
+        return partyRepo.getById(id);
     }
 
 }

@@ -9,5 +9,5 @@ import java.util.Set;
 
 @Repository
 public interface ElectionRepository extends JpaRepository<Election, Long> {
-    Set<User> findAllUsersHere(String ID);
+//    Set<User> findAllUsersHere(String ID);
 }
