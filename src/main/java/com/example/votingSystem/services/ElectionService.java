@@ -75,5 +75,4 @@ public class ElectionService {
         curr.setHashed_PIN(encoder.encode(pin));
         return voteRepository.save(curr);
     }
-
 }

@@ -5,7 +5,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Assigned Vote</title>
+    <title>Show Vote</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -16,13 +16,9 @@
             </button>
         </a>
     </div>
-    <form th:action="@{/checkVote}" method="get" style="margin-right: 10px">
-        <button class="btn btn-outline-success" type="submit">Check Vote</button>
-    </form>
 </nav>
 <div class="container text-center">
-    <p align="center" style="color: blue;">Your vote has been calculated!</p>
-    <p th:text="'Your vote has id: ' + ${voteId}" style="color: blue"></p>
+    <p th:text="'Your vote is: ' + ${partyName}" style="color: blue"></p>
 </div>
 </body>
 </html>
