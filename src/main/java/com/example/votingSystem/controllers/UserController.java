@@ -20,11 +20,6 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/index")
-    public String viewHomePage() {
-        return "index";
-    }
-
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -36,7 +31,7 @@ public class UserController {
     public String processRegister(@ModelAttribute("user") User curr){
 
         if(userService.presentUser(curr.getPIN())){
-            return "redirect:/alreadyVoted";
+            return "redirect:/login";
         }
         if(!userService.isAdult(curr.getPIN())){
             return "redirect:/underAge";

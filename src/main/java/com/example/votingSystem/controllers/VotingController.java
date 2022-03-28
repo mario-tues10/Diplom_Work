@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class VotingController {
 
-    private User user;
-
     @Autowired
     ElectionService electionService;
 
@@ -34,30 +32,8 @@ public class VotingController {
     @Autowired
     UserService userService;
 
-    private void init(){
-        electionService.createElection(  "President Elections", LocalDateTime.of(2022, Month.MARCH,
-                26, 0, 0, 0), LocalDateTime.of(2022, Month.MARCH,
-                28, 0, 0, 0)
-        );
-        electionService.createElection( "Parliamentary Elections", LocalDateTime.of(2022, Month.MARCH,
-                10, 0, 0, 0), LocalDateTime.of(2022, Month.MARCH,
-                12, 0, 0, 0));
-        electionService.createElection( "Past Elections", LocalDateTime.of(2022, Month.MARCH,
-                26, 0, 0, 0), LocalDateTime.of(2022, Month.MARCH,
-                29, 0, 0, 0));
-
-        partyService.createParty("GERB", 1L);
-        partyService.createParty("PP", 1L);
-        partyService.createParty("BSP", 1L);
-        partyService.createParty("DSP", 1L);
-        partyService.createParty("ATAKA", 1L);
-
-
-    }
-
     @GetMapping("/elections")
     public String displayElections(Model model){
-        init();
         model.addAttribute("elections", electionService.currElections());
         return "elections";
     }
