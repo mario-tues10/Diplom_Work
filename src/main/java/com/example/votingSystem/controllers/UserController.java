@@ -30,12 +30,14 @@ public class UserController {
     @PostMapping("/register")
     public String processRegister(@ModelAttribute("user") User curr){
 
-        if(userService.presentUser(curr.getPIN())){
-            return "redirect:/login";
-        }
         if(!userService.isAdult(curr.getPIN())){
             return "redirect:/underAge";
         }
+
+        if(userService.presentUser(curr.getPIN())){
+            return "redirect:/login";
+        }
+
         userService.createUser(curr.getPIN());
         return "redirect:/login";
 
