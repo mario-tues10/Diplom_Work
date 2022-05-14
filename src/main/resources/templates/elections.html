@@ -43,7 +43,7 @@
                 <td th:text= "${election.name}">
                 </td>
                 <td>
-                    <a th:href="'/elections/id=' + ${election.id} + '/performVote/'">
+                    <a th:href="'/elections/' + ${election.id} + '/performVote/'">
                         <button class="btn btn-outline-success" type="submit">Vote Here</button>
                     </a>
                 </td>

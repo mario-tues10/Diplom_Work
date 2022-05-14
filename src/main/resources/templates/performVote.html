@@ -19,7 +19,7 @@
     </div>
 </nav>
 <div class="panel panel-primary" id="content" style="margin: 30px; padding-left: 20px; padding-right: 20px;">
-    <h1>Choose Party</h1>
+    <h1>Choose Party and Candidate</h1>
     <table th:style="'width:{model.widthOfUserScreen}'">
         <tr>
             <td valign="top">
@@ -34,13 +34,19 @@
         <tr>
             <th style="background-color: red; color: white">ID</th>
             <th style="background-color: red; color: white;">Party name</th>
+            <th style="background-color: red; color: white;">Candidates</th>
             <th style="background-color: red; color: white;">Voting</th>
         </tr>
         </thead>
         <tbody th:each="party: ${parties}">
         <tr style="cursor: pointer;">
             <td th:text="${party.id}"></td>
-            <td th:text= "${party.name}">
+            <td th:text="${party.name}"></td>
+            <td>
+                <select class="form-select">
+                    <option value="" selected>None</option>
+                    <option th:each="candidate: ${party.partyPeople}" th:text="${candidate.name}"></option>
+                </select>
             </td>
             <td>
                 <form th:action="@{'/performVote/' + ${party.id}}" method="post" th:object="${user}">

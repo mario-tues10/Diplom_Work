@@ -4,6 +4,7 @@ package com.example.votingSystem.services;
 import com.example.votingSystem.models.Election;
 import com.example.votingSystem.models.User;
 import com.example.votingSystem.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -13,10 +14,10 @@ import java.util.regex.Pattern;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void createUser(String pin){
@@ -40,22 +41,22 @@ public class UserService {
     }
     
     private LocalDate createDate(String pin){
-        String born_year = pin.substring(0, 2);
-        String born_month = pin.substring(2, 4);
+        String bornYear = pin.substring(0, 2);
+        String bornMonth = pin.substring(2, 4);
         
-        String born_date = pin.substring(4, 6);
-        if(ageParser(born_month).equals("20")){
-            born_year = "19" + born_year;
-        }else if(ageParser(born_month).equals("21")){
-            born_year = "20" + born_year;
-            born_month = String.valueOf((Integer.parseInt(born_month) - 40));
+        String bornDate = pin.substring(4, 6);
+        if(ageParser(bornMonth).equals("20")){
+            bornYear = "19" + bornYear;
+        }else if(ageParser(bornMonth).equals("21")){
+            bornYear = "20" + bornYear;
+            bornMonth = String.valueOf((Integer.parseInt(bornMonth) - 40));
         }
 
-        if(Pattern.matches("[1-9]", born_month)){
-            born_month = "0" + born_month;
+        if(Pattern.matches("[1-9]", bornMonth)){
+            bornMonth = "0" + bornMonth;
         }
          
-        String exactDate = born_date + "-" + born_month + "-" + born_year;
+        String exactDate = bornDate + "-" + bornMonth + "-" + bornYear;
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return LocalDate.parse(exactDate, dateFormat);
     }

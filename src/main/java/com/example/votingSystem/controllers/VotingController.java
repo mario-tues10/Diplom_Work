@@ -8,6 +8,7 @@ import com.example.votingSystem.models.Vote;
 import com.example.votingSystem.services.ElectionService;
 import com.example.votingSystem.services.PartyService;
 import com.example.votingSystem.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,19 +20,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class VotingController {
 
-    @Autowired
-    ElectionService electionService;
+    private final ElectionService electionService;
 
-    @Autowired
-    PartyService partyService;
+    private final PartyService partyService;
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
 
     private Long voteId;
 
@@ -43,16 +41,16 @@ public class VotingController {
         return "elections";
     }
 
-    @GetMapping("/elections/id={id}/performVote")
+    @GetMapping("/elections/{id}/performVote")
     public String displayParties(@PathVariable("id") String electionId, Model model){
-        Election curr = electionService.getById(Long.parseLong(electionId));
+        Election curr = electionService.getElectionById(Long.parseLong(electionId));
         model.addAttribute("parties", curr.getParties());
         return "performVote";
     }
 
     @PostMapping("/performVote/{partyId}")
     public String voteProcess(@PathVariable Long partyId, @AuthenticationPrincipal UserPrincipal userPrincipal){
-        Party party = partyService.getParty(partyId);
+        Party party = partyService.getPartyById(partyId);
         User curr = userService.getUser(userPrincipal.getUsername());
         if(userService.isUserVotedForElection(curr, party.getCurrElection())) {
             return "redirect:/alreadyVoted";
