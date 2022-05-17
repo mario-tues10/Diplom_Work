@@ -1,6 +1,7 @@
 package com.example.votingSystem.services;
 
 
+import com.example.votingSystem.customConfig.AgeConfig;
 import com.example.votingSystem.models.Election;
 import com.example.votingSystem.models.User;
 import com.example.votingSystem.repositories.UserRepository;
@@ -19,6 +20,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final AgeConfig requiredAge;
+
     @Transactional
     public void createUser(String pin){
         User curr = new User();
@@ -33,7 +36,7 @@ public class UserService {
         LocalDate userYears = createDate(pin);
         long diff = ChronoUnit.YEARS.between(userYears, curr);
 
-        return diff >= 18;
+        return diff >= requiredAge.getAge();
     }
 
     public boolean presentUser(String pin){
