@@ -25,5 +25,8 @@ public class CandidateService {
         candidateRepo.save(candidate);
     }
 
+    public Candidate getCandidateById(Long id){
+        return candidateRepo.getById(id);
+    }
 
 }

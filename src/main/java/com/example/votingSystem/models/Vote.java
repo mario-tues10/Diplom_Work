@@ -24,6 +24,10 @@ public class Vote {
     @JoinColumn(name = "party_id", updatable = false)
     private Party votedParty;
 
+    @ManyToOne
+    @JoinColumn(name = "candidate_id", updatable = false)
+    private Candidate votedCandidate;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

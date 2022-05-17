@@ -38,7 +38,7 @@
             <th style="background-color: red; color: white;">Voting</th>
         </tr>
         </thead>
-        <tbody th:each="party: ${parties}">
+        <tbody th:each="party: ${parties} ">
         <tr style="cursor: pointer;">
             <td th:text="${party.id}"></td>
             <td th:text="${party.name}"></td>
@@ -49,7 +49,7 @@
                 </select>
             </td>
             <td>
-                <form th:action="@{'/performVote/' + ${party.id}}" method="post" th:object="${user}">
+                <form th:action="@{'/performVote/' + ${party.id} + '?candidateId=' + ${candidate.id}}" method="post" th:object="${user}">
                     <input type="submit" name="vote-submit" id="vote-submit"
                            class="form-control btn btn-primary" value="Vote" />
                 </form>

@@ -3,7 +3,9 @@ package com.example.votingSystem.models;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +26,10 @@ public class Candidate {
     @ManyToOne
     @JoinColumn(name = "party_id", updatable = false)
     private Party currParty;
+
+    @OneToMany(mappedBy = "votedCandidate")
+    @ToString.Exclude
+    Set<Vote> candidateVotes = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

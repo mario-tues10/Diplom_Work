@@ -1,23 +1,16 @@
 package com.example.votingSystem.controllers;
 
-import com.example.votingSystem.models.Election;
-import com.example.votingSystem.models.Party;
-import com.example.votingSystem.models.User;
-import com.example.votingSystem.models.UserPrincipal;
-import com.example.votingSystem.models.Vote;
+import com.example.votingSystem.models.*;
+import com.example.votingSystem.services.CandidateService;
 import com.example.votingSystem.services.ElectionService;
 import com.example.votingSystem.services.PartyService;
 import com.example.votingSystem.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,11 +22,9 @@ public class VotingController {
 
     private final UserService userService;
 
+    private final CandidateService candidateService;
+
     private final BCryptPasswordEncoder encoder;
-
-    private Long voteId;
-
-    private String partyName;
 
     @GetMapping("/elections")
     public String displayElections(Model model){
@@ -48,34 +39,23 @@ public class VotingController {
         return "performVote";
     }
 
-    @PostMapping("/performVote/{partyId}")
-    public String voteProcess(@PathVariable Long partyId, @AuthenticationPrincipal UserPrincipal userPrincipal){
+    @PostMapping("/performVote/{partyId}/")
+    public String voteProcess(@PathVariable Long partyId, @AuthenticationPrincipal UserPrincipal userPrincipal,
+    @RequestParam Long candidateId, Model model){
         Party party = partyService.getPartyById(partyId);
+        Candidate candidate = candidateService.getCandidateById(candidateId);
         User curr = userService.getUser(userPrincipal.getUsername());
         if(userService.isUserVotedForElection(curr, party.getCurrElection())) {
             return "redirect:/alreadyVoted";
         }
-        Vote vote = electionService.vote(curr, party);
-        voteId = vote.getId();
-        return "redirect:/assignedVote";
-    }
-
-    @GetMapping("/assignedVote")
-    public String ready(Model model){
-        model.addAttribute("voteId", voteId);
+        Vote vote = electionService.vote(curr, candidate, party);
+        model.addAttribute("voteId", vote.getId());
         return "assignedVote";
-    }
-
-    @GetMapping("/checkVote")
-    public String showCheck(Model model){
-        model.addAttribute("PIN", null);
-        model.addAttribute("voteId", null);
-        return "checkVote";
     }
 
     @PostMapping("/checkVote")
     public String processShowingVote(@ModelAttribute("PIN") String pin, @ModelAttribute("voteId") String voteId,
-                                     @AuthenticationPrincipal UserPrincipal userPrincipal){
+                                     @AuthenticationPrincipal UserPrincipal userPrincipal, Model model){
 
         if(!userPrincipal.getUser().getPIN().equals(pin)){
             return "redirect:/checkVote";
@@ -85,13 +65,9 @@ public class VotingController {
             return "redirect:/checkVote";
         }
         Party party = curr.getVotedParty();
-        partyName = party.getName();
-        return "redirect:/showVote";
-    }
-
-    @GetMapping("/showVote")
-    public String showVote(Model model){
-        model.addAttribute("partyName", partyName);
+        Candidate candidate = curr.getVotedCandidate();
+        model.addAttribute("partyName", party.getName());
+        model.addAttribute("candidateName", candidate.getName());
         return "showVote";
     }
 

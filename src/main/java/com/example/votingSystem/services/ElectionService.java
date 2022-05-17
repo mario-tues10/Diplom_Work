@@ -1,9 +1,6 @@
 package com.example.votingSystem.services;
 
-import com.example.votingSystem.models.Election;
-import com.example.votingSystem.models.Party;
-import com.example.votingSystem.models.User;
-import com.example.votingSystem.models.Vote;
+import com.example.votingSystem.models.*;
 import com.example.votingSystem.repositories.ElectionRepository;
 import com.example.votingSystem.repositories.VoteRepository;
 import lombok.RequiredArgsConstructor;
@@ -58,9 +55,9 @@ public class ElectionService {
     }
 
     @Transactional
-    public Vote vote(User user, Party party){
+    public Vote vote(User user, Candidate candidate, Party party){
         saveElectionToUser(user, party);
-        return createVote(party, user.getPIN());
+        return createVote(party, user.getPIN(), candidate);
     }
 
     private void saveElectionToUser(User user, Party party){
@@ -69,9 +66,10 @@ public class ElectionService {
         userService.saveUser(user);
     }
 
-    private Vote createVote(Party party, String pin){
+    private Vote createVote(Party party, String pin, Candidate candidate){
         Vote curr = new Vote();
         curr.setVotedParty(party);
+        curr.setVotedCandidate(candidate);
         curr.setHashed_PIN(encoder.encode(pin));
         return voteRepository.save(curr);
     }
