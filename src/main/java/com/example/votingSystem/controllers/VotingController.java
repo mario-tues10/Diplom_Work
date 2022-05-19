@@ -36,10 +36,11 @@ public class VotingController {
     public String displayParties(@PathVariable("id") String electionId, Model model){
         Election curr = electionService.getElectionById(Long.parseLong(electionId));
         model.addAttribute("parties", curr.getParties());
+        model.addAttribute("candidateId", null);
         return "performVote";
     }
 
-    @PostMapping("/performVote/{partyId}/")
+    @PostMapping("/performVote/{partyId}/{candidateId}")
     public String voteProcess(@PathVariable Long partyId, @AuthenticationPrincipal UserPrincipal userPrincipal,
     @RequestParam Long candidateId, Model model){
         Party party = partyService.getPartyById(partyId);
