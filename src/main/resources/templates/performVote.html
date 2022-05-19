@@ -39,22 +39,26 @@
         </tr>
         </thead>
         <tbody th:each="party: ${parties}" >
-        <tr style="cursor: pointer;">
-            <td th:text="${party.id}"></td>
-            <td th:text="${party.name}"></td>
-            <td>
-                <select class="form-select" >
-                    <option value="" selected>None</option>
-                    <option th:each="candidate: ${party.partyPeople}"  th:name="candidateId" th:value="${candidate.id}" th:text="${candidate.name}"></option>
-                </select>
-            </td>
-            <td>
-                <form th:action="@{'/performVote/' + ${party.id} + '?candidateId=' + ${candidateId}}" method="post" th:object="${user}">
+        <form
+                th:action="@{'/performVote/' + ${party.id}}"
+                method="post" th:object="${user}">
+            <tr style="cursor: pointer;">
+                <td th:text="${party.id}"></td>
+                <td th:text="${party.name}"></td>
+                <td>
+                    <select class="form-select" th:name="candidateId">
+                        <option value="" selected>None</option>
+                        <option th:each="candidate: ${party.partyPeople}"
+                                th:name="candidateId" th:value="${candidate.id}"
+                                th:text="${candidate.name}"></option>
+                    </select>
+                </td>
+                <td>
                     <input type="submit" name="vote-submit" id="vote-submit"
-                           class="form-control btn btn-primary" value="Vote" />
-                </form>
-            </td>
-        </tr>
+                           class="form-control btn btn-primary" value="Vote"/>
+                </td>
+            </tr>
+        </form>
         </tbody>
     </table>
 </div>

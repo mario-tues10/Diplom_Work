@@ -9,7 +9,6 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-@Component
 @RequiredArgsConstructor
 public class ExampleVotingProcess {
 
@@ -19,7 +18,6 @@ public class ExampleVotingProcess {
 
     private final CandidateService candidateService;
 
-    @PostConstruct
     private void init(){
         electionService.createElection(  "President Elections", LocalDateTime.of(2022, Month.MAY,
                 11, 0, 0, 0), LocalDateTime.of(2022, Month.MAY,

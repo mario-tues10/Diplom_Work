@@ -36,15 +36,21 @@ public class VotingController {
     public String displayParties(@PathVariable("id") String electionId, Model model){
         Election curr = electionService.getElectionById(Long.parseLong(electionId));
         model.addAttribute("parties", curr.getParties());
-        model.addAttribute("candidateId", null);
         return "performVote";
     }
 
-    @PostMapping("/performVote/{partyId}/{candidateId}")
+    @PostMapping("/performVote/{partyId}")
     public String voteProcess(@PathVariable Long partyId, @AuthenticationPrincipal UserPrincipal userPrincipal,
-    @RequestParam Long candidateId, Model model){
+    @RequestParam String candidateId, Model model){
         Party party = partyService.getPartyById(partyId);
-        Candidate candidate = candidateService.getCandidateById(candidateId);
+        Long candidateIdL = null;
+        if(!candidateId.isBlank()){
+            candidateIdL = Long.valueOf(candidateId);
+        }
+        Candidate candidate = null;
+        if(candidateIdL != null) {
+            candidate = candidateService.getCandidateById(candidateIdL);
+        }
         User curr = userService.getUser(userPrincipal.getUsername());
         if(userService.isUserVotedForElection(curr, party.getCurrElection())) {
             return "redirect:/alreadyVoted";
@@ -52,6 +58,11 @@ public class VotingController {
         Vote vote = electionService.vote(curr, candidate, party);
         model.addAttribute("voteId", vote.getId());
         return "assignedVote";
+    }
+
+    @GetMapping("/checkVote")
+    public String showingVote(){
+        return "checkVote";
     }
 
     @PostMapping("/checkVote")
@@ -66,9 +77,13 @@ public class VotingController {
             return "redirect:/checkVote";
         }
         Party party = curr.getVotedParty();
-        Candidate candidate = curr.getVotedCandidate();
+        if(curr.getVotedCandidate() != null) {
+            Candidate candidate = curr.getVotedCandidate();
+            model.addAttribute("candidateName", candidate.getName());
+        }else{
+            model.addAttribute("candidateName", null);
+        }
         model.addAttribute("partyName", party.getName());
-        model.addAttribute("candidateName", candidate.getName());
         return "showVote";
     }
 

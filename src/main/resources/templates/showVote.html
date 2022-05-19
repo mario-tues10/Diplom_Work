@@ -18,7 +18,8 @@
     </div>
 </nav>
 <div class="container text-center">
-    <h1 th:text="'Your vote is: ' + ${partyName}" style="color: blue"></h1>
+    <h1 th:text="'Your party vote is: ' + ${partyName}" style="color: blue"></h1>
+    <h1 th:if="${candidateName != null}" th:text="'Your candidate vote is: ' + ${candidateName}" style="color: blue"></h1>
 </div>
 </body>
 </html>
